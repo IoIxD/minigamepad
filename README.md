@@ -7,7 +7,7 @@ Minimalist, cross-platform, C99 library for dealing with gamepads. Currently not
 
 int main() {
   mg_gamepads joysticks = {0};
-  mg_gamepads_fetch(&joysticks);
+  mg_gamepads_init(&joysticks);
 
   size_t joystick_num = joysticks.num;
 

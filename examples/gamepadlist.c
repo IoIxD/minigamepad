@@ -3,7 +3,7 @@
 
 int main(void) {
   mg_gamepads gamepads = {0};
-  mg_gamepads_fetch(&gamepads);
+  mg_gamepads_init(&gamepads);
 
   size_t joystick_num = gamepads.num;
 

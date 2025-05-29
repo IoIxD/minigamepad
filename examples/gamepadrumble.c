@@ -25,7 +25,7 @@ __declspec(noreturn) DWORD WINAPI rumble_thread(LPVOID lpParam);
 #endif
 
 int main(void) {
-  mg_gamepads_fetch(&gamepads);
+  mg_gamepads_init(&gamepads);
   if (gamepads.num <= 0) {
     printf("no controllers connected\n");
     return 1;

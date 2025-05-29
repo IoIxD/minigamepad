@@ -19,17 +19,19 @@ int main(void) {
 
   clear();
 
-  mg_gamepads_fetch(&gamepads);
+  mg_gamepads_init(&gamepads);
   mg_gamepad *gamepad = mg_gamepads_at(&gamepads, idx);
 
   for (;;) {
     mg_gamepad_update(gamepad);
 
     // This is not best practice!
-    // Checking if the controller is disconnected is not the only way you should check if you need to refresh the controller list! However, better ways of doing it are a bit complex and out of the scope of this example. 
+    // Checking if the controller is disconnected is not the only way you should
+    // check if you need to refresh the controller list! However, better ways of
+    // doing it are a bit complex and out of the scope of this example.
     if (!mg_gamepad_is_connected(gamepad)) {
       clear();
-      mg_gamepads_fetch(&gamepads);
+      mg_gamepads_init(&gamepads);
       gamepad = mg_gamepads_at(&gamepads, idx);
     }
 

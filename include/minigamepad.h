@@ -89,6 +89,9 @@ typedef enum {
 #define MAX_BUTTONS MG_GAMEPAD_BUTTON_MAX
 #define MAX_AXISES MG_GAMEPAD_AXIS_MAX
 
+/// Internal context of the gamepads list, i.e. implementation details.
+struct mg_gamepads_context_t;
+
 /// Internal context of the gamepad, i.e. implementation details.
 struct mg_gamepad_context_t;
 
@@ -117,7 +120,11 @@ typedef struct mg_gamepad_t {
 
 /// A list of gamepads recognized by the system.
 typedef struct mg_gamepads_t {
+  // Internal context for platform dependent items.
+  struct mg_gamepads_context_t *ctx;
+  // List of gamepads registered.
   struct mg_gamepad_t __list[16];
+  // Number of gamepads registered.
   size_t num;
 } mg_gamepads;
 
@@ -126,13 +133,16 @@ typedef struct mg_gamepads_t {
 /// want the correct values.
 void mg_gamepad_update(mg_gamepad *gamepad);
 
-/// Get the gamepads currently connected to the system.
-void mg_gamepads_fetch(mg_gamepads *);
+/// Initialize `gamepads` and add any currently connected gamepads to its list.
+void mg_gamepads_init(mg_gamepads *gamepads);
+/// Update the list of gamepads, removing any ones that aren't connected and
+/// adding any new ones.
+void mg_gamepads_refresh(mg_gamepads *gamepads);
 /// Get the number of gamepads attached to the system.
 size_t mg_gamepads_num(mg_gamepads *gamepads);
 /// Get the game pad at the given index.
 mg_gamepad *mg_gamepads_at(mg_gamepads *mj, size_t idx);
-/// Free the struct acquired by `mg_gamepads_fetch`.
+/// Free the struct acquired by `mg_gamepads_init`.
 void mg_gamepads_free(mg_gamepads *gamepads);
 
 /// Get the gamepad's name.
