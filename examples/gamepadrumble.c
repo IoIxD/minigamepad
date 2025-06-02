@@ -4,8 +4,9 @@
 
 #ifndef _WIN32
 #include <pthread.h>
-#include <unistd.h>
 #include <sys/time.h>
+#include <unistd.h>
+
 #else
 #include <windows.h>
 // #include <processthreadsapi.h>
@@ -27,7 +28,7 @@ __declspec(noreturn) DWORD WINAPI rumble_thread(LPVOID lpParam);
 #endif
 
 int main(void) {
-  mg_gamepads_fetch(&gamepads);
+  mg_gamepads_init(&gamepads);
   if (gamepads.num <= 0) {
     printf("no controllers connected\n");
     return 1;
@@ -47,8 +48,10 @@ int main(void) {
 #endif
 
   for (;;) {
-    mg_gamepad_update(gamepad, NULL);
-    axis_value += (double)gamepad->axises[0].value / 1000000000.0;
+    while (mg_gamepads_update(&gamepads, NULL))
+      ;
+
+    axis_value += (double)gamepad->axises[0].value / 10000000.0;
   }
 
   mg_gamepads_free(&gamepads);
